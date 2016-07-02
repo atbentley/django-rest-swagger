@@ -3,7 +3,15 @@ Miscellaneous
 Markdown
 --------
 
-django-rest-swagger will parse docstrings as markdown if `Markdown <https://pypi.python.org/pypi/Markdown>`_ is installed.
+django-rest-swagger will parse docstrings as markdown if `Markdown <https://pypi.python.org/pypi/Markdown>`_ is installed and the view description function is set to `rest_framework.views.get_view_description` (which is the default).
+
+Add to your settings:
+
+.. code-block:: python
+
+    REST_FRAMEWORK = {
+        'VIEW_DESCRIPTION_FUNCTION': 'rest_framework.views.get_view_description'  # default
+    }
 
 reStructuredText
 ----------------

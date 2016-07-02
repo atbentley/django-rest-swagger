@@ -17,7 +17,7 @@ from django.utils.encoding import smart_text
 
 import rest_framework
 from rest_framework import viewsets
-from rest_framework.compat import apply_markdown
+
 try:
     from rest_framework.fields import CurrentUserDefault
 except ImportError:
@@ -298,9 +298,9 @@ class BaseMethodIntrospector(object):
                 method_docs
             )
             docstring += '\n' + method_docs
-        docstring = docstring.strip()
+        docstring = get_view_description(self.callback, html=True, docstring=docstring)
 
-        return do_markdown(docstring)
+        return docstring.strip()
 
     def get_parameters(self):
         """
@@ -584,14 +584,6 @@ class WrappedAPIViewIntrospector(BaseViewIntrospector):
             class_docs)
         return get_view_description(
             self.callback, html=True, docstring=class_docs)
-
-
-def do_markdown(docstring):
-    # Markdown is optional
-    if apply_markdown:
-        return apply_markdown(docstring)
-    else:
-        return docstring.replace("\n\n", "<br/>")
 
 
 class APIViewMethodIntrospector(BaseMethodIntrospector):

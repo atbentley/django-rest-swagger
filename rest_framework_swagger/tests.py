@@ -2641,6 +2641,21 @@ class RESTDocstringTests(TestCase):
         self.assertIn('Oh yes this is reST', docs)
         self.assertIn('Oh yes so is this', docs)
 
+    def test_use_view_function(self):
+        class MyViewSet(ModelViewSet):
+            """
+            **this is bold**
+            """
+            model = User
+            serializer_class = CommentSerializer
+            paginate_by = 20
+            paginate_by_param = 'page_this_by'
+
+        class_introspector = make_viewset_introspector(MyViewSet)
+        introspector = get_introspectors(class_introspector)['create']
+        docs = introspector.get_notes()
+        self.assertEqual('<p><strong>this is bold</strong></p>', docs)
+
 
 def get_custom_description(view_cls, html=False):
     description = view_cls.__doc__ or ''
